@@ -1,0 +1,43 @@
+# Git metadata
+.git/
+.gitignore
+
+# Python virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Python caches / build artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# IDE / editor files
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Local secrets / env files (never bake these into an image)
+.env
+.env.*
+*.pem
+*.key
+
+# Tests are not needed inside the runtime image
+tests/
+
+# Kubernetes / kind / compose config are not part of the app image
+k8s/
+kind/
+compose.yaml
+
+# Reports, screenshots, and security evidence — irrelevant to runtime
+security/
+evidence/
+*.md
+!README.md
