@@ -1,0 +1,53 @@
+services:
+  flask-app:
+    # Build locally from the Dockerfile in this repo. Once published,
+    # you can swap this for `image: <dockerhub-username>/msc-de1-flask-app:1.0.0`
+    # to run the exact published image instead of a local build.
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: msc-de1-flask-app:local
+    container_name: msc-de1-flask-app
+
+    ports:
+      - "5001:5000"
+
+    # Restart on failure, but don't loop forever on a permanently broken
+    # container during local testing.
+    restart: on-failure:3
+
+    environment:
+      # No secrets here — this app currently needs no configuration, but
+      # this is where non-sensitive runtime config would go (e.g. via a
+      # `.env` file that is git-ignored and never committed).
+      - FLASK_ENV=production
+
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0) if urllib.request.urlopen('http://127.0.0.1:5000/', timeout=2).status == 200 else sys.exit(1)"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+    # --- Security hardening -------------------------------------------
+    # No privileged mode, no Docker socket mount, no host networking.
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      # gunicorn needs a small writable area for its worker heartbeat
+      # files even though the app itself is stateless.
+      - /tmp
+
+    # Basic resource ceiling for local testing (mirrors the Kubernetes
+    # requests/limits used later so behaviour is consistent).
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 128M
+        reservations:
+          cpus: "0.10"
+          memory: 64M
