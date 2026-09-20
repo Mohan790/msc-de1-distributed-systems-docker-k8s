@@ -36,7 +36,7 @@ spec:
         - name: flask-app
           # Replace <dockerhub-username> with your Docker Hub username and
           # keep this tag in sync with the version documented in the README.
-          image: <dockerhub-username>/msc-de1-flask-app:1.0.0
+          image: mohan1008/msc-de1-flask-app:1.0.0
           imagePullPolicy: IfNotPresent
 
           ports:
