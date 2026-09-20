@@ -1,0 +1,43 @@
+# NOTE: kind's default CNI (kindnet) does NOT enforce NetworkPolicy objects.
+# This manifest documents the *intended* network access for the flask-app
+# pods; to have it actually enforced on a kind cluster you would need to
+# create the cluster with a policy-capable CNI such as Calico or Cilium
+# instead of the default one (see README "Known limitations").
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: flask-app-network-policy
+  namespace: msc-de1-project
+spec:
+  podSelector:
+    matchLabels:
+      app: flask-app
+  policyTypes:
+    - Ingress
+    - Egress
+
+  ingress:
+    # Only allow traffic into the app on its HTTP port, and only from
+    # other pods inside the same project namespace (e.g. the Service,
+    # or a future test/client pod). kubectl port-forward talks to the
+    # kubelet directly and is not affected by this policy.
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: msc-de1-project
+      ports:
+        - protocol: TCP
+          port: 5000
+
+  egress:
+    # Allow DNS resolution (needed for any future outbound calls and for
+    # cluster service discovery).
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53

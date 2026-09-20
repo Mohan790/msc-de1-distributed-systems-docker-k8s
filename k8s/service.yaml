@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app
+  namespace: msc-de1-project
+  labels:
+    app: flask-app
+    project: msc-de1-distributed-systems
+spec:
+  type: ClusterIP
+  selector:
+    app: flask-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP

@@ -1,0 +1,17 @@
+Put your command-output screenshots / text logs here as you complete each
+part of the project, e.g.:
+
+  01-baseline-tests-passing.png
+  02-docker-build.png
+  03-container-running-curl.png
+  04-image-history.txt
+  05-dockerhub-push.png
+  06-kind-cluster-nodes.png
+  07-pods-running.png
+  08-self-healing-pod-deleted.png
+  09-scale-to-3.png
+  10-rollout-history.png
+  11-rollback.png
+
+Naming them in the rough order you did the work makes it easy to match
+them to the report sections.

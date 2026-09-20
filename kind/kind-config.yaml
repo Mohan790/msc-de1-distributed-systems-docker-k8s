@@ -1,0 +1,13 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: msc-de1-cluster
+nodes:
+  - role: control-plane
+    # Map the host's 8080 to the ingress-ready ports on the control-plane
+    # node, in case you later choose to add an Ingress controller.
+    extraPortMappings:
+      - containerPort: 80
+        hostPort: 8080
+        protocol: TCP
+  - role: worker
+  - role: worker

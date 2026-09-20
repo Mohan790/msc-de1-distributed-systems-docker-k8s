@@ -139,7 +139,7 @@ curl http://127.0.0.1:5000/
 docker rm -f pulled-check
 ```
 
-**Public Docker Hub repository:** `<insert-url-here>`
+**Public Docker Hub repository:** `https://hub.docker.com/r/mohan1008/msc-de1-flask-app`
 **Image used for the Kubernetes deployment below:** `<dockerhub-username>/msc-de1-flask-app:1.0.0`
 
 ## 9. Create the kind cluster
